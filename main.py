@@ -7,6 +7,8 @@ from aiogram import types
 from aiogram.filters import CommandStart, Command
 # импортирую помощник маркдаун (всё что касается разметки) из библиотеки айограм
 from aiogram.utils import markdown
+from aiogram.enums import ParseMode
+
 
 import config
 
@@ -24,6 +26,9 @@ dp = Dispatcher()
 async def handle_start(message: types.Message):
     await message.answer(text=f"Привет, {message.from_user.full_name}!")
 
+
+
+
 # слэш (/) не указывать. т.к обрабатываю команду help, а не команду команда хелп(/help)
 # по умолчанию слеш (/) значение, которое будет искаться вначале сообщения.
 # поэтому Командхэлп достаточно чтобы обработать команду help
@@ -34,14 +39,34 @@ async def handle_start(message: types.Message):
 async def handle_help(message: types.Message):
     # указываю в тексте что (мне) будет жирным шрифтом
 
-    text = "Я эхо бот.\nОтправь мне любое сообщение!"
-    entity_bold = types.MessageEntity(
-        type="bold",
-        offset=len("Я эхо бот.\nОтправь "),
-        length=3,
+    # text = "Я Кекабот.\nОтправь мне любое сообщение!"
+    # entity_bold = types.MessageEntity(
+    #    type="bold",  #Жирный шрифт. *слово* выделение слова, которое будет жирным
+    #    offset=len("Я Кекабот.\nОтправь "),
+    #    length=3,               #длина 3 символа (мне)
+    # )
+    # entities = [entity_bold]
+    text = "Я Кекабот\\.\nОтправь *мне* любое сообщение\\!"
+    # ниже создается помощник, который всё что передано превращает в строчку и склеивает по разделителю sep
+    # выделяет  жирным шрифтом, чтобы не делать вручную - не ставить звездочки
+    text = markdown.text(
+        "Я Кекабот\\.",
+        markdown.text(
+            "Отправь",
+            markdown.bold("мне"),  #делаю жирным только это сообщение
+            "любое сообщение\\!"),
+
+
+
+        # к строчке ниже, всё что туда накидал будет разделено новой строкой
+        sep="\n",
     )
-    entities = [entity_bold]
-    await message.answer(text=text, entities=entities)
+    await message.answer(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+    )
+
+
 
 # обработчик. Ассинхронная функция. Бот отвечает тем, что ему написали
 @dp.message()
