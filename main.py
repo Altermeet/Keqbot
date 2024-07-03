@@ -70,9 +70,9 @@ async def handle_help(message: types.Message):
     )
     await message.answer(
         text=text,
-        #parse_mode=None,
 
-        #parse_mode=ParseMode.MARKDOWN_V2,
+
+        parse_mode=ParseMode.MARKDOWN_V2,
     )
 
 
@@ -108,9 +108,8 @@ async def echo_message(message: types.Message):
 async def main():
     logging.basicConfig(level=logging.INFO)
     bot = Bot(
-        token=config.TOKEN_BOT,
-        parse_mode=ParseMode.MARKDOWN_V2,
-    )
+        token=config.TOKEN_BOT)
+
     await dp.start_polling(bot)
 
 
