@@ -10,6 +10,7 @@ from aiogram.utils import markdown
 from aiogram.enums import ParseMode
 
 
+
 import config
 
 
@@ -24,9 +25,13 @@ dp = Dispatcher()
 # если нет ластнейм, то возвращается только фёрстнейм. Фёрстнейм в ТГ есть у всех
 
 async def handle_start(message: types.Message):
-    await message.answer(text=f"Привет, {message.from_user.full_name}!")
+    await message.answer(text=f"Привет, {markdown.hbold(message.from_user.full_name)}!",
+         parse_mode=ParseMode.HTML,
+                         )
 
 
+#выше указываю разметку через HTML
+#hbold - HTML bold
 
 
 # слэш (/) не указывать. т.к обрабатываю команду help, а не команду команда хелп(/help)
@@ -50,20 +55,24 @@ async def handle_help(message: types.Message):
     # ниже создается помощник, который всё что передано превращает в строчку и склеивает по разделителю sep
     # выделяет  жирным шрифтом, чтобы не делать вручную - не ставить звездочки
     text = markdown.text(
-        "Я Кекабот\\.",
+        "Я Кекабот\\.",  # экранирую точку. Все спец символы экранируются
         markdown.text(
             "Отправь",
-            markdown.bold("мне"),  #делаю жирным только это сообщение
-            "любое сообщение\\!"),
+            markdown.markdown_decoration.bold(
+                markdown.text(
+                    markdown.underline("сообщение"), # underline подчеркивает слова в текущем случае сообщение
+                        "мне"),  #делаю жирным только это сообщение "сообщение\\!"),
+        ),
 
-
-
+        ),
         # к строчке ниже, всё что туда накидал будет разделено новой строкой
         sep="\n",
     )
     await message.answer(
         text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
+        #parse_mode=None,
+
+        #parse_mode=ParseMode.MARKDOWN_V2,
     )
 
 
@@ -98,7 +107,10 @@ async def echo_message(message: types.Message):
 # функция для запуска бота
 async def main():
     logging.basicConfig(level=logging.INFO)
-    bot = Bot(token=config.TOKEN_BOT)
+    bot = Bot(
+        token=config.TOKEN_BOT,
+        parse_mode=ParseMode.MARKDOWN_V2,
+    )
     await dp.start_polling(bot)
 
 
