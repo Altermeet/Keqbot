@@ -8,7 +8,8 @@ from aiogram.filters import CommandStart, Command
 # импортирую помощник маркдаун (всё что касается разметки) из библиотеки айограм
 from aiogram.utils import markdown
 from aiogram.enums import ParseMode
-
+from bs4 import BeautifulSoup
+import requests
 
 
 import config
@@ -76,13 +77,27 @@ async def handle_help(message: types.Message):
         parse_mode=ParseMode.MARKDOWN_V2,
     )
 
+
 @dp.message(Command("pic"))
 async def handle_command_pic(message: types.Message):
-    url = "https://img10.reactor.cc/pics/post/nasii-Anime-Artist-artist-Genshin-Impact-Ero-8379766.png"
-    await  message.reply_photo(
+    url = "https://img10.reactor.cc/pics/post/Keqing-%28Genshin-Impact%29-Genshin-Impact-Genshin-Impact-Ero-poki-%28j0ch3fvj6nd%29-8473822.png"
+    await message.reply_photo(
         photo=url
 
     )
+
+#парсер
+
+@dp.message(["text"]) #Эта хуйня не работает
+async def parser(message: types.message):
+    url = "https://gi.reactor.cc/tag/Keqing+%28Genshin+Impact%29" + message.text
+    request = requests.get(url)
+    soup = BeautifulSoup(request.text, "html.parser")
+
+    img = soup.find("div", class_="postContainer")
+    img = img.findChildren("img")[0]
+    img = "https://gi.reactor.cc/tag/Keqing+%28Genshin+Impact%29" + img["src"]
+
 
 # обработчик. Ассинхронная функция. Бот отвечает тем, что ему написали.
 @dp.message()
