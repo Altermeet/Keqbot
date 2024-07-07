@@ -76,7 +76,13 @@ async def handle_help(message: types.Message):
         parse_mode=ParseMode.MARKDOWN_V2,
     )
 
+@dp.message(Command("pic"))
+async def handle_command_pic(message: types.Message):
+    url = "https://img10.reactor.cc/pics/post/nasii-Anime-Artist-artist-Genshin-Impact-Ero-8379766.png"
+    await  message.reply_photo(
+        photo=url
 
+    )
 
 # обработчик. Ассинхронная функция. Бот отвечает тем, что ему написали.
 @dp.message()
