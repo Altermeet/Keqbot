@@ -25,8 +25,9 @@ dp = Dispatcher()
 # если нет ластнейм, то возвращается только фёрстнейм. Фёрстнейм в ТГ есть у всех
 
 async def handle_start(message: types.Message):
-    await message.answer(text=f"Привет, {markdown.hbold(message.from_user.full_name)}!",
-         parse_mode=ParseMode.HTML,
+    url = "https://static.tvtropes.org/pmwiki/pub/images/tartaglia_face_closeup_20.png"
+    await message.answer(text=f"{markdown.hide_link(url)}Привет, {markdown.hbold(message.from_user.full_name)}!",
+         parse_mode=ParseMode.HTML,# Через хайд линк вставляется картинка
                          )
 
 
