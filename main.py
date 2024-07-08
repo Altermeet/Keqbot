@@ -80,7 +80,7 @@ async def handle_help(message: types.Message):
 
 @dp.message(Command("pic"))
 async def handle_command_pic(message: types.Message):
-    url = "https://img10.reactor.cc/pics/post/Keqing-%28Genshin-Impact%29-Genshin-Impact-Genshin-Impact-Ero-poki-%28j0ch3fvj6nd%29-8473822.png"
+    url = "https://img10.reactor.cc/pics/post/Genshin-Impact-Ero-Genshin-Impact-Keqing-%28Genshin-Impact%29-ponnyu12-8502298.jpeg"
     await message.reply_photo(
         photo=url
 
@@ -88,15 +88,7 @@ async def handle_command_pic(message: types.Message):
 
 #парсер
 
-@dp.message(["text"]) #Эта хуйня не работает
-async def parser(message: types.message):
-    url = "https://gi.reactor.cc/tag/Keqing+%28Genshin+Impact%29" + message.text
-    request = requests.get(url)
-    soup = BeautifulSoup(request.text, "html.parser")
 
-    img = soup.find("div", class_="postContainer")
-    img = img.findChildren("img")[0]
-    img = "https://gi.reactor.cc/tag/Keqing+%28Genshin+Impact%29" + img["src"]
 
 
 # обработчик. Ассинхронная функция. Бот отвечает тем, что ему написали.
